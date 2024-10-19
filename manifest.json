@@ -1,0 +1,10 @@
+{
+    "manifest_version": 1,
+    "name": "FrogLog",
+    "description": "Basic Extension",
+    "version": "0.1",
+    "action": {
+      "default_popup": "main.html",
+      "default_icon": "icon.png"
+    }
+}
