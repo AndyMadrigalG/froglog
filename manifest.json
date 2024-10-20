@@ -5,7 +5,7 @@
 "description": "Basic Extension to track and analyze user activity on the browser",
 "action": {
     "default_popup": "popup.html",
-    "default_icon": "images/Sapillo Pixel.png"
+    "default_icon": "icon.png"
 },
 "permissions": [
     "tabs", 
