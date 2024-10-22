@@ -3,11 +3,13 @@ let eventLog = [];
 
 // Helper function to push events to the eventLog
 function pushEvent(activity_name, domain) {
-  eventLog.push({
+  json_activity = {
     timestamp: new Date().toISOString(),
     activity_name: activity_name,
     domain: domain
-  });
+  };
+  console.log("||",json_activity,"||"); // Log the event to the console for testing purposes
+  eventLog.push(json_activity);
 }
 
 // Tab Events
@@ -24,17 +26,17 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 });
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-  let removedIds = concat("|| tabId closed: ", tabId, " and windowId closed: ", removeInfo.windowId, " ||");
-  console.log(removedIds);
-  pushEvent("tabClosed", removedIds); //tab url needs to be added here instead of tabId
+  let removedIds = "tabId closed: " + tabId + " and windowId closed: "+ removeInfo.windowId;
+  pushEvent("tabClosed", removedIds); // tab url needs to be added here instead of removedIds
 });
 
 // Handle long-lived connections from content script
 chrome.runtime.onConnect.addListener((port) => {
-  console.assert(port.name === "myPort");
   port.onMessage.addListener((message) => {
-    if (message.activity_name) {
-      pushEvent(message.activity_name, message.domain);
+    if (request.action === "getEventLog" && port.name === "myPort"){
+      if (message.activity_name) {
+        pushEvent(message.activity_name, message.domain);
+      }
     }
   });
 });
@@ -47,6 +49,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function getEventLog() {
-  // Example function to get event log
   return eventLog;
 }
