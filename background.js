@@ -33,7 +33,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 // Handle long-lived connections from content script
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((message) => {
-    if (request.action === "getEventLog" && port.name === "myPort"){
+    if (message.action === "getEventLog" && port.name === "myPort"){
       if (message.activity_name) {
         pushEvent(message.activity_name, message.domain);
       }
