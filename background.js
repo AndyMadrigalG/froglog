@@ -1,5 +1,11 @@
+/*
+  This file is responsible for handling the background tasks of the extension.
+*/
+
 // Array to store events
 let eventLog = [];
+// Array to store user history
+let userhistory = [];
 
 // Helper function to push events to the eventLog
 function pushEvent(activity_name, domain) {
@@ -45,9 +51,40 @@ chrome.runtime.onConnect.addListener((port) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getEventLog") {
     sendResponse(eventLog);
+  } else if (request.action === "getLastHourEvents") {
+    sendResponse(getLastHourEvents());
+  } else if (request.action === "clearEventLog") {
+    eventLog = [];
+  } else if (request.action === "getLastHourHistory") {
+    sendResponse(getLastHourHistory());
   }
 });
 
+// Function to get browsing history from the last hour
+chrome.runtime.sendMessage({ action: "getLastHourHistory" }, (response) => {
+  console.log("Browsing history from the last hour:", response);
+});
+
+// Function to get events from the last hour
+function getLastHourEvents() {
+  let oneHourAgo = new Date(Date.now() - 60 * 60 * 1000); // 60s * 60m * 1000ms
+  console.log("One hour ago:", oneHourAgo);
+  return eventLog.filter(event => new Date(event.timestamp) >= oneHourAgo);
+}
+
+// Function to get events from the last hour
+function getLastHourHistory() {
+  let oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  console.log("One hour ago:", oneHourAgo);
+  chrome.history.search({ text: "", startTime: oneHourAgo.getTime() }, (historyItems) => {
+    sendResponse(historyItems);
+  });
+}
+
 function getEventLog() {
   return eventLog;
+}
+
+function getUserHistory() {
+  return userhistory;
 }

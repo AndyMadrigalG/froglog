@@ -9,7 +9,7 @@
     },
     "permissions": [
         "history",
-        "tabs", 
+        "tabs",
         "activeTab",
         "scripting"
     ],
@@ -19,7 +19,7 @@
     "content_scripts": [
         {
         "matches": ["<all_urls>"],
-        "js": ["content.js"]
+        "js": ["content.js"] 
         }
     ]
 }
