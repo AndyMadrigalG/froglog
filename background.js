@@ -39,7 +39,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 // Handle long-lived connections from content script
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((message) => {
-    if (message.action === "getEventLog" && port.name === "myPort"){
+    if (message.action === "getEventLog" && port.name === "my_Port"){
       if (message.activity_name) {
         pushEvent(message.activity_name, message.domain);
       }
@@ -47,16 +47,22 @@ chrome.runtime.onConnect.addListener((port) => {
   });
 });
 
-// Expose the eventLog if requested
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+// Handle messages from the popup
+chrome.runtime.onMessage.addListener((request, sendResponse) => {
   if (request.action === "getEventLog") {
+    printEventLog();
     sendResponse(eventLog);
   } else if (request.action === "getLastHourEvents") {
+    //printEventLog();
     sendResponse(getLastHourEvents());
   } else if (request.action === "clearEventLog") {
     eventLog = [];
+    sendResponse({ status: "Event log cleared" });
   } else if (request.action === "getLastHourHistory") {
-    sendResponse(getLastHourHistory());
+    printUserHistory();
+    sendResponse(getLastHourEvents());
+    getLastHourHistory(sendResponse);
+    return true; // Indicate that the response will be sent asynchronously
   }
 });
 
@@ -72,10 +78,10 @@ function getLastHourEvents() {
   return eventLog.filter(event => new Date(event.timestamp) >= oneHourAgo);
 }
 
-// Function to get events from the last hour
-function getLastHourHistory() {
+// Function to get browsing history from the last hour
+function getLastHourHistory(sendResponse) {
   let oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-  console.log("One hour ago:", oneHourAgo);
+  console.log("One hour ago:", oneHourAgo.getTime());
   chrome.history.search({ text: "", startTime: oneHourAgo.getTime() }, (historyItems) => {
     sendResponse(historyItems);
   });
@@ -88,3 +94,12 @@ function getEventLog() {
 function getUserHistory() {
   return userhistory;
 }
+
+function printEventLog() {
+  console.log(eventLog);
+}
+
+function printUserHistory() {
+  console.log(userhistory);
+}
+console.log("----------------- END OF BACKGROUND.JS -----------------");
