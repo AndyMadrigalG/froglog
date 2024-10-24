@@ -33,4 +33,6 @@ function sendEvent(activity_name) {
 // Event Listeners
 document.addEventListener('mouseup', () => sendEvent('clickUp'));
 document.addEventListener('keyup', () => sendEvent('keyup'));
-// document.addEventListener('scroll', () => sendEvent('scroll')); //Removed, because it causes too much noise 
+// document.addEventListener('scroll', () => sendEvent('scroll')); //Removed, because it causes too much noise
+
+console.log("----------------- END OF POPUP.JS -----------------");
