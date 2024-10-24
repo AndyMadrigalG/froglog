@@ -1,5 +1,5 @@
 /*
-  This file is responsible for handling the background tasks of the extension.
+  This background.js file is a service worker, a centralized controller that listens for events 
 */
 
 // Array to store events
@@ -102,4 +102,5 @@ function printEventLog() {
 function printUserHistory() {
   console.log(userhistory);
 }
+
 console.log("----------------- END OF BACKGROUND.JS -----------------");
