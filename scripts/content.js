@@ -1,8 +1,7 @@
-/*
+/* 
 This script is injected into every page that the user visits. 
 It listens for user interactions and sends the data to the background script through a long-lived connection
 */
-
 // Establish a long-lived connection to the background script
 let port = chrome.runtime.connect({ name: "myPort" });
 
