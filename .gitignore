@@ -3,3 +3,4 @@ node_modules/
 # Output directory
 dist/
 dist/file_to_be_deleted_at_compiling.txt
+dist/file_to_be_deleted_at_compiling.txt
