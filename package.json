@@ -26,7 +26,7 @@
   "scripts": {
     "clean": "rmdir /s /q dist",
     "compile": "npx tsc",
-    "copy-assets": "robocopy . dist /MIR /XD tsconfig.json src dist .git",
+    "copy-assets": "robocopy . dist /MIR /XD tsconfig.json src dist .git .gitignore",
     "build": "npm run clean && npm run compile && npm run copy-assets"
   },
   "devDependencies": {
