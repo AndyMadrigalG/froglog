@@ -18,6 +18,6 @@ chrome.action.onClicked.addListener((tab) => {
     }).then(() => {
         console.log('Button appended to DOM');
     }).catch((err) => {
-        console.error(err);
+        console.error('Button not appended to DOM: ', err);
     });
 });
